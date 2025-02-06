@@ -1,0 +1,16 @@
+nav.nav
+  a.logo(href="/") Shopping
+  a(href="/list") 상품
+  a(href="/item/new") 상품추가
+  a(href="/board") 보드
+  a(href="/ai") AI
+  a(href="/my-page")= username
+
+  //- 로그인 상태에 따른 버튼 표시
+  if isloggedin
+    // logout을 POST로 요청
+    form(id = "logoutForm", method ="POST", action="/logout",style="display:inline")
+      input(type="hidden" name= "_csrf", value=csrfToken)
+      button.simplebutton-log(href="/logout") Logout
+  else
+    a.simplebutton-reversed(href="/login") Login

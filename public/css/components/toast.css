@@ -1,0 +1,15 @@
+#toast-message {
+  color: violet;
+}
+
+/* global.css */
+#toast-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+  color: violet;
+  transition:
+    opacity 0.5s,
+    transform 0.5s;
+}

@@ -1,0 +1,62 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    )
+    meta(http-equiv="X-UA-Compatible" content="ie=edge")
+    title Document
+    link(rel="stylesheet" href="/global.css")
+
+  body
+    include nav.pug
+
+    // 플래시 메시지 표시 영역
+    if message
+      div#toast-message= message
+
+    // 아이템 리스트
+    div
+      each item in items
+        div.card
+          a(href=`/item/${item.getId()}`)
+            img(src="https://placehold.co/200" alt="")
+          div
+            a(href=`/item/${item.getId()}`)
+              h4= item.getTitle()
+            p= item.getPrice()
+            // 리액트와 달리 HTML문자열에서는 직접 함수호출을 적음 => 문자열 호출
+            // HTML에서는 직접 onClick을 붙여도됨
+            button.simplebutton-reversed(onClick=`_onDelete(${item.getId()})`) 삭제
+        // CSRF 토큰을 hidden input으로 포함하여 JavaScript에서 사용
+    input(type="hidden" id="csrf-token" value= csrfToken)
+      // 메시지를 일정 시간 후에 사라지게 하는 JavaScript
+      // delete 요청은 body를 본래 보낼수없다. 다만 설정에서 변환가능
+    script.
+
+      function _onDelete(itemId) {
+        const csrfToken = document.querySelector("#csrf-token").value;
+        fetch(`/item/delete?id=${itemId}`, {
+          method: "DELETE", headers: {
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN': csrfToken // AJAX는 XSRF토큰 폼은 CSRF토큰 추가
+          },
+        }).then(res => res.text())
+        .then((res) => {
+          location.reload();
+        })
+        .catch(e => {
+          console.log(('에러', e))
+        })
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        const toast = document.querySelector('#toast-message');
+        if (toast) {
+          setTimeout(() => {
+            toast.style.opacity = '0'; // 메시지를 투명하게 만듦
+            toast.style.visibility = 'hidden'; // 메시지의 시각적 요소만 숨김
+          }, 2000); // 메시지를 2초 후에 숨김
+        }
+      });
