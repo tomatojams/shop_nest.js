@@ -1,0 +1,62 @@
+doctype html
+html(lang="ko")
+  head
+    meta(charset="UTF-8")
+    meta(
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    )
+    meta(http-equiv="X-UA-Compatible" content="ie=edge")
+    title Spring AI Chat
+    link(rel="stylesheet" href="/global.css")  // 스타일링을 위해 글로벌 CSS 연결
+
+  body
+    include nav.pug
+    h4 디지털 노마드 직업군 추천
+
+    //- 페이지를 좌우로 나누는 컨테이너
+    div.container
+      //- 왼쪽 입력 폼
+      div.input-container
+        form(id="nomadForm")
+          label(for="answer1") 제가 좋아하는 것:
+          input(type="text" id="answer1" name="userAnswers[0]")
+          br
+          br
+          label(for="answer2") 제가 잘하는 것:
+          input(type="text" id="answer2" name="userAnswers[1]")
+          br
+          br
+          label(for="answer3") 제 단점:
+          input(type="text" id="answer3" name="userAnswers[2]")
+          br
+          br
+          label(for="answer4") 제 장점:
+          input(type="text" id="answer4" name="userAnswers[3]")
+          br
+          br
+          label(for="answer5") 제가 제공할 수 있는 것:
+          input(type="text" id="answer5" name="userAnswers[4]")
+          br
+          br
+          label(for="answer6") 제가 가진 디지털 역량:
+          input(type="text" id="answer6" name="userAnswers[5]")
+          br
+          br
+          input(type="hidden" id="csrf-token" value= csrfToken)
+          button.simplebutton(type="button" onclick="submitForm()") 추천받기
+
+      //- 오른쪽 결과 표시 영역
+      div.result-container(style="display:none")
+        h3 AI 추천 결과:
+        p.result-text
+
+      //- 로딩 메시지
+      div.loading-message(style="display:none")
+        p 로딩 중... 잠시만 기다려주세요.
+
+    //- 외부 JS 파일 로드
+    //script(src="https://code.jquery.com/jquery-3.6.0.min.js" defer)
+    //script(src="/js/dist/bundle.js" defer)
+
+    script(src="/js/nomad.js")

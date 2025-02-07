@@ -21,9 +21,9 @@ import express from "express";
 import { execSync } from 'child_process'; // 복사
 
 async function bootstrap() {
-  // 개발 환경일 경우 views 폴더 복사 (빌드 시 필요)
+  // 개발 환경일 경우 templates 폴더 복사 (빌드 시 필요)
   if (process.env.NODE_ENV !== 'production') {
-    execSync('cp -r src/views dist/src/views');
+    execSync('cp -r src/templates dist/src/templates');
   }
 
   // NestJS 애플리케이션을 Express 기반으로 생성
@@ -33,7 +33,7 @@ async function bootstrap() {
   const root = process.cwd();
   app.use(express.static(join(root, 'public')));  // public 폴더의 정적 파일 제공
   app.setViewEngine('pug');                       // Pug 템플릿 엔진 설정
-  app.setBaseViewsDir(join(__dirname, 'views'));  // 뷰 파일 경로 설정
+  app.setBaseViewsDir(join(__dirname, 'templates'));  // 뷰 파일 경로 설정
 
   // 로거 인스턴스 생성
   const logger = new Logger("App");
@@ -72,7 +72,7 @@ async function bootstrap() {
 
   // 서버 실행 (8080 포트)
   await app.listen(8080);
-  logger.log('URL: http://localhost:8080/');
+  logger.log('URL: http://localhost:8080/board');
   logger.log('API 문서: http://localhost:8080/docs');
 }
 

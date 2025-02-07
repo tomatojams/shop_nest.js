@@ -1,0 +1,34 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    )
+    meta(http-equiv="X-UA-Compatible" content="ie=edge")
+    title Document
+    link(rel="stylesheet" href="/global.css")
+
+  body
+    include nav.pug
+    if username != 'Anonymous'
+      p 안녕하세요, #{username}님! 로그인이 완료되었습니다.
+      // 로그아웃버튼에 csrfToken 추가
+      form(id = "logoutForm", method ="POST", action="/logout",style="display:inline")
+        input(type="hidden" name= "_csrf", value=csrfToken)
+        button.simplebutton-log(href="/logout") 로그아웃
+    else
+      p 로그인이 필요합니다.
+      //Spring Security는 /login POST, username, password 단어를 맞춰야함
+      form.postform(action="/login" method="post")
+        input(type="hidden" name="_csrf" value=csrfToken)
+        div
+          label(for="username") 사용자 이름
+          input(type="text" id="username" name="username" required)
+        div
+          label(for="password") 비밀번호
+          input(type="password" id="password" name="password" required)
+        div
+          button(type="submit").simplebutton-reversed2 로 그 인
+      a(href="/join").simplebutton-sm  가 입
